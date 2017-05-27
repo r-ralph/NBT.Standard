@@ -56,8 +56,6 @@ namespace NBT
       get { return TagType.IntArray; }
     }
 
-    //TODO: Category
-    //[Category("Data")]
     public int[] Value
     {
       get { return _value; }
