@@ -6,12 +6,6 @@ namespace NBT
 {
     public sealed class TagDouble : Tag, IEquatable<TagDouble>
     {
-        #region Fields
-
-        private double _value;
-
-        #endregion
-
         #region Constructors
 
         public TagDouble()
@@ -32,26 +26,19 @@ namespace NBT
         public TagDouble(string name, double value)
             : base(name)
         {
-            _value = value;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.Double; }
-        }
+        public override TagType Type => TagType.Double;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue(0D)]
-        public double Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public double Value { get; set; }
 
         #endregion
 
@@ -64,8 +51,9 @@ namespace NBT
                 int hash;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                hash = hash * 23 + _value.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                hash = hash * 23 + Value.GetHashCode();
 
                 return hash;
             }
@@ -73,17 +61,17 @@ namespace NBT
 
         public override object GetValue()
         {
-            return _value;
+            return Value;
         }
 
         public override void SetValue(object value)
         {
-            _value = Convert.ToDouble(value);
+            Value = Convert.ToDouble(value);
         }
 
         public override string ToValueString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -98,11 +86,11 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    result = Math.Abs(_value - other.Value) < double.Epsilon;
+                    result = Math.Abs(Value - other.Value) < double.Epsilon;
                 }
             }
 

@@ -9,8 +9,6 @@ namespace NBT
     {
         #region Fields
 
-        private TagType _limitType;
-
         private Tag _owner;
 
         #endregion
@@ -19,31 +17,28 @@ namespace NBT
 
         public TagCollection()
         {
-            _limitType = TagType.None;
+            LimitType = TagType.None;
         }
 
         public TagCollection(TagType limitType)
         {
-            _limitType = limitType;
+            LimitType = limitType;
         }
 
         #endregion
 
         #region Properties
 
-        public TagType LimitType
-        {
-            get { return _limitType; }
-        }
+        public TagType LimitType { get; private set; }
 
         public Tag Owner
         {
-            get { return _owner; }
+            get => _owner;
             set
             {
                 _owner = value;
 
-                foreach (Tag child in this)
+                foreach (var child in this)
                 {
                     child.Parent = value;
                 }
@@ -56,16 +51,14 @@ namespace NBT
 
         public Tag Add(TagType tagType)
         {
-            return this.Add(tagType, TagType.None);
+            return Add(tagType, TagType.None);
         }
 
         public Tag Add(TagType tagType, TagType limitToType)
         {
-            Tag tag;
+            var tag = TagFactory.CreateTag(string.Empty, tagType, limitToType);
 
-            tag = TagFactory.CreateTag(string.Empty, tagType, limitToType);
-
-            this.Add(tag);
+            Add(tag);
 
             return tag;
         }
@@ -82,47 +75,47 @@ namespace NBT
             // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
             if (value is byte)
             {
-                result = this.Add((byte) value);
+                result = Add((byte) value);
             }
             else if (value is byte[])
             {
-                result = this.Add((byte[]) value);
+                result = Add((byte[]) value);
             }
             else if (value is int)
             {
-                result = this.Add((int) value);
+                result = Add((int) value);
             }
             else if (value is int[])
             {
-                result = this.Add((int[]) value);
+                result = Add((int[]) value);
             }
             else if (value is float)
             {
-                result = this.Add((float) value);
+                result = Add((float) value);
             }
             else if (value is double)
             {
-                result = this.Add((double) value);
+                result = Add((double) value);
             }
             else if (value is long)
             {
-                result = this.Add((long) value);
+                result = Add((long) value);
             }
             else if (value is short)
             {
-                result = this.Add((short) value);
+                result = Add((short) value);
             }
             else if (value is string)
             {
-                result = this.Add((string) value);
+                result = Add((string) value);
             }
             else if (value is TagDictionary)
             {
-                result = this.Add((TagDictionary) value);
+                result = Add((TagDictionary) value);
             }
             else if (value is TagCollection)
             {
-                result = this.Add((TagCollection) value);
+                result = Add((TagCollection) value);
             }
             else
             {
@@ -135,9 +128,9 @@ namespace NBT
 
         public void AddRange(IEnumerable<object> values)
         {
-            foreach (object value in values)
+            foreach (var value in values)
             {
-                this.Add(value);
+                Add(value);
             }
         }
 
@@ -149,13 +142,11 @@ namespace NBT
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb;
-
-            sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append('[');
 
-            foreach (Tag tag in this)
+            foreach (var tag in this)
             {
                 if (sb.Length > 1)
                 {
@@ -172,7 +163,7 @@ namespace NBT
 
         protected override void ClearItems()
         {
-            foreach (Tag item in this)
+            foreach (var item in this)
             {
                 item.Parent = null;
             }
@@ -182,13 +173,13 @@ namespace NBT
 
         protected override void InsertItem(int index, Tag item)
         {
-            if (_limitType == TagType.None)
+            if (LimitType == TagType.None)
             {
-                _limitType = item.Type;
+                LimitType = item.Type;
             }
-            else if (item.Type != _limitType)
+            else if (item.Type != LimitType)
             {
-                throw new ArgumentException($"Only items of type {_limitType} can be added to this collection.",
+                throw new ArgumentException($"Only items of type {LimitType} can be added to this collection.",
                     nameof(item));
             }
 
@@ -197,16 +188,14 @@ namespace NBT
                 throw new ArgumentException("Only unnamed tags are supported.", nameof(item));
             }
 
-            item.Parent = this.Owner;
+            item.Parent = Owner;
 
             base.InsertItem(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            Tag item;
-
-            item = this[index];
+            var item = this[index];
             item.Parent = null;
 
             base.RemoveItem(index);
@@ -214,13 +203,13 @@ namespace NBT
 
         protected override void SetItem(int index, Tag item)
         {
-            if (_limitType != TagType.None && item.Type != _limitType)
+            if (LimitType != TagType.None && item.Type != LimitType)
             {
-                throw new ArgumentException($"Only items of type {_limitType} can be added to this collection.",
+                throw new ArgumentException($"Only items of type {LimitType} can be added to this collection.",
                     nameof(item));
             }
 
-            item.Parent = this.Owner;
+            item.Parent = Owner;
 
             base.SetItem(index, item);
         }

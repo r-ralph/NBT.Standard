@@ -6,49 +6,39 @@ namespace NBT
 {
     public sealed class TagLong : Tag, IEquatable<TagLong>
     {
-        #region Fields
-
-        private long _value;
-
-        #endregion
-
         #region Constructors
 
         public TagLong()
             : this(string.Empty, 0)
-        { }
+        {
+        }
 
         public TagLong(string name)
             : this(name, 0)
-        { }
+        {
+        }
 
         public TagLong(long value)
             : this(string.Empty, value)
-        { }
+        {
+        }
 
         public TagLong(string name, long value)
             : base(name)
         {
-            _value = value;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.Long; }
-        }
+        public override TagType Type => TagType.Long;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue(0L)]
-        public long Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public long Value { get; set; }
 
         #endregion
 
@@ -61,8 +51,9 @@ namespace NBT
                 int hash;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                hash = hash * 23 + _value.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                hash = hash * 23 + Value.GetHashCode();
 
                 return hash;
             }
@@ -70,17 +61,17 @@ namespace NBT
 
         public override object GetValue()
         {
-            return _value;
+            return Value;
         }
 
         public override void SetValue(object value)
         {
-            _value = Convert.ToInt64(value);
+            Value = Convert.ToInt64(value);
         }
 
         public override string ToValueString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -95,11 +86,11 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    result = _value == other.Value;
+                    result = Value == other.Value;
                 }
             }
 

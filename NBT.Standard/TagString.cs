@@ -5,12 +5,6 @@ namespace NBT
 {
     public sealed class TagString : Tag, IEquatable<TagString>
     {
-        #region Fields
-
-        private string _value;
-
-        #endregion
-
         #region Constructors
 
         public TagString()
@@ -26,26 +20,19 @@ namespace NBT
         public TagString(string name, string value)
             : base(name)
         {
-            _value = value;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.String; }
-        }
+        public override TagType Type { get; } = TagType.String;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue("")]
-        public string Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public string Value { get; set; }
 
         #endregion
 
@@ -58,8 +45,8 @@ namespace NBT
                 int hash;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                hash = hash * 23 + this.ToString().GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                hash = hash * 23 + ToString().GetHashCode();
 
                 return hash;
             }
@@ -67,22 +54,22 @@ namespace NBT
 
         public override object GetValue()
         {
-            return _value;
+            return Value;
         }
 
         public override void SetValue(object value)
         {
-            _value = Convert.ToString(value);
+            Value = Convert.ToString(value);
         }
 
         public override string ToString()
         {
-            return string.Concat("[String: ", this.Name, "=\"", this.ToValueString(), "\"]");
+            return string.Concat("[String: ", Name, "=\"", ToValueString(), "\"]");
         }
 
         public override string ToValueString()
         {
-            return _value ?? string.Empty;
+            return Value ?? string.Empty;
         }
 
         #endregion
@@ -97,11 +84,11 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    result = _value == other.Value;
+                    result = Value == other.Value;
                 }
             }
 

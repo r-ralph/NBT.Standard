@@ -9,7 +9,7 @@ namespace NBT.Serialization
     {
         #region Constants
 
-        private static readonly char[] _cDataTriggers =
+        private static readonly char[] CDataTriggers =
         {
             '<',
             '>',
@@ -42,9 +42,7 @@ namespace NBT.Serialization
 
         public XmlTagWriter(Stream stream)
         {
-            XmlWriterSettings settings;
-
-            settings = new XmlWriterSettings
+            var settings = new XmlWriterSettings
             {
                 Indent = true,
                 Encoding = Encoding.UTF8
@@ -100,9 +98,7 @@ namespace NBT.Serialization
 
         public override void WriteEndTag()
         {
-            TagType currentTag;
-
-            currentTag = _state.CurrentTag;
+            var currentTag = _state.CurrentTag;
 
             if ((currentTag == TagType.ByteArray || currentTag == TagType.IntArray) && _arraySb != null &&
                 _arraySb.Length != 0)
@@ -137,7 +133,7 @@ namespace NBT.Serialization
                 _arraySb = new StringBuilder();
             }
 
-            this.WriteStartTag(name, type);
+            WriteStartTag(name, type);
         }
 
         public override void WriteStartDocument()
@@ -149,9 +145,7 @@ namespace NBT.Serialization
 
         public override void WriteStartTag(string name, TagType type)
         {
-            TagContainerState currentState;
-
-            currentState = _state.StartTag(type);
+            var currentState = _state.StartTag(type);
 
             if (string.IsNullOrEmpty(name))
             {
@@ -176,7 +170,7 @@ namespace NBT.Serialization
 
         public override void WriteStartTag(string name, TagType type, TagType listType, int count)
         {
-            this.WriteStartTag(name, type);
+            WriteStartTag(name, type);
 
             _state.StartList(listType, count);
 
@@ -187,7 +181,7 @@ namespace NBT.Serialization
         {
             if (value != null)
             {
-                if (value.IndexOfAny(_cDataTriggers) != -1)
+                if (value.IndexOfAny(CDataTriggers) != -1)
                 {
                     _writer.WriteCData(value);
                 }
@@ -210,11 +204,9 @@ namespace NBT.Serialization
 
         protected override void WriteValue(int[] value)
         {
-            StringBuilder output;
+            var output = new StringBuilder();
 
-            output = new StringBuilder();
-
-            foreach (int i in value)
+            foreach (var i in value)
             {
                 if (output.Length != 0)
                 {
@@ -249,11 +241,9 @@ namespace NBT.Serialization
 
         protected override void WriteValue(byte[] value)
         {
-            StringBuilder output;
+            var output = new StringBuilder();
 
-            output = new StringBuilder();
-
-            foreach (byte i in value)
+            foreach (var i in value)
             {
                 if (output.Length != 0)
                 {
@@ -272,17 +262,17 @@ namespace NBT.Serialization
 
             _writer.WriteAttributeString("limitType", value.LimitType.ToString());
 
-            foreach (Tag item in value)
+            foreach (var item in value)
             {
-                this.WriteTag(item);
+                WriteTag(item);
             }
         }
 
         protected override void WriteValue(TagDictionary value)
         {
-            foreach (Tag item in value)
+            foreach (var item in value)
             {
-                this.WriteTag(item);
+                WriteTag(item);
             }
         }
 

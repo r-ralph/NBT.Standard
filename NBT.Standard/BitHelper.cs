@@ -39,7 +39,7 @@ namespace NBT
                 }
                 else if (offset == 0)
                 {
-                    for (int index = (length + 1) / 2 - 1; index >= 0; index--)
+                    for (var index = (length + 1) / 2 - 1; index >= 0; index--)
                     {
                         newIndex = length - index - 1;
                         temp = buffer[index];
@@ -49,7 +49,7 @@ namespace NBT
                 }
                 else
                 {
-                    for (int index = (length + 1) / 2 - 1; index >= 0; index--)
+                    for (var index = (length + 1) / 2 - 1; index >= 0; index--)
                     {
                         newIndex = length - index - 1;
                         temp = buffer[offset + index];

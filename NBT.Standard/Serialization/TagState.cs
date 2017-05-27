@@ -38,9 +38,7 @@ namespace NBT.Serialization
         {
             get
             {
-                TagType type;
-
-                type = _openTags != null && _openTags.Count != 0 ? _openTags.Peek() : TagType.None;
+                var type = _openTags != null && _openTags.Count != 0 ? _openTags.Peek() : TagType.None;
 
                 return type;
             }
@@ -52,13 +50,11 @@ namespace NBT.Serialization
 
         public void EndTag()
         {
-            this.EndTag(null);
+            EndTag(null);
         }
 
         public void EndTag(Action writeEnd)
         {
-            TagType type;
-
             if (_openTags == null)
             {
                 throw new InvalidOperationException("No document is currently open.");
@@ -69,13 +65,11 @@ namespace NBT.Serialization
                 throw new InvalidOperationException("No tag is currently open.");
             }
 
-            type = _openTags.Pop();
+            var type = _openTags.Pop();
 
             if (type == TagType.List || type == TagType.Compound)
             {
-                TagContainerState state;
-
-                state = _openContainers.Pop();
+                var state = _openContainers.Pop();
 
                 if (type == TagType.Compound)
                 {
@@ -115,9 +109,7 @@ namespace NBT.Serialization
         {
             if (_openContainers.Count != 0)
             {
-                TagContainerState state;
-
-                state = _openContainers.Peek();
+                var state = _openContainers.Peek();
                 state.ChildType = listType;
                 state.ExpectedCount = expectedCount;
             }

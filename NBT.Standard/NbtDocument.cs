@@ -26,15 +26,9 @@ namespace NBT
             _documentRoot = (TagCompound) TagFactory.CreateTag(TagType.Compound);
         }
 
-        public NbtDocument(TagCompound document)
-            : this()
+        public NbtDocument(TagCompound document) : this()
         {
-            if (document == null)
-            {
-                throw new ArgumentNullException(nameof(document));
-            }
-
-            _documentRoot = document;
+            _documentRoot = document ?? throw new ArgumentNullException(nameof(document));
         }
 
         #endregion
@@ -114,7 +108,6 @@ namespace NBT
             {
                 result = GetDocumentName(new BinaryTagReader(stream));
 
-                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
                 if (result == null)
                 {
                     stream.Seek(0, SeekOrigin.Begin);
@@ -137,9 +130,7 @@ namespace NBT
 
         public static NbtDocument LoadDocument(string fileName)
         {
-            NbtDocument document;
-
-            document = new NbtDocument();
+            var document = new NbtDocument();
             document.Load(fileName);
 
             return document;
@@ -147,9 +138,7 @@ namespace NBT
 
         public static NbtDocument LoadDocument(Stream stream)
         {
-            NbtDocument document;
-
-            document = new NbtDocument();
+            var document = new NbtDocument();
             document.Load(stream);
 
             return document;
@@ -195,20 +184,17 @@ namespace NBT
 
         #region Properties
 
-        public TagCompound DocumentRoot
-        {
-            get { return _documentRoot; }
-        }
+        public TagCompound DocumentRoot => _documentRoot;
 
         public string FileName
         {
-            get { return _fileName; }
-            set { _fileName = value; }
+            get => _fileName;
+            set => _fileName = value;
         }
 
         public NbtFormat Format
         {
-            get { return _format; }
+            get => _format;
             set
             {
                 if (_format != value)
@@ -232,7 +218,7 @@ namespace NBT
 
         public void Load()
         {
-            this.Load(_fileName);
+            Load(_fileName);
         }
 
         public void Load(string fileName)
@@ -249,7 +235,7 @@ namespace NBT
 
             using (Stream stream = File.OpenRead(fileName))
             {
-                this.Load(stream);
+                Load(stream);
             }
 
             _fileName = fileName;
@@ -257,16 +243,13 @@ namespace NBT
 
         public virtual void Load(Stream stream)
         {
-            TagReader reader;
-            NbtFormat format;
-
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            format = GetDocumentFormat(stream);
-            reader = GetReader(format, stream);
+            var format = GetDocumentFormat(stream);
+            var reader = GetReader(format, stream);
 
             _documentRoot = reader.ReadDocument();
             _format = format;
@@ -274,7 +257,7 @@ namespace NBT
 
         public Tag Query(string query)
         {
-            return this.Query<Tag>(query);
+            return Query<Tag>(query);
         }
 
         public T Query<T>(string query) where T : Tag
@@ -284,7 +267,7 @@ namespace NBT
 
         public void Save()
         {
-            this.Save(_fileName);
+            Save(_fileName);
         }
 
         public void Save(string fileName)
@@ -299,15 +282,15 @@ namespace NBT
                 if (_format == NbtFormat.Binary)
                 {
                     // for binary files, compress with gzip
-                    using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Compress))
+                    using (var compressedStream = new GZipStream(stream, CompressionMode.Compress))
                     {
-                        this.Save(compressedStream);
+                        Save(compressedStream);
                     }
                 }
                 else
                 {
                     // leave xml uncompressed
-                    this.Save(stream);
+                    Save(stream);
                 }
             }
 
@@ -316,14 +299,12 @@ namespace NBT
 
         public void Save(Stream stream)
         {
-            TagWriter writer;
-
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            writer = this.GetTagWriter(_format, stream);
+            var writer = GetTagWriter(_format, stream);
             writer.WriteStartDocument();
             writer.WriteTag(_documentRoot);
             writer.WriteEndDocument();
@@ -333,15 +314,14 @@ namespace NBT
 
         public override string ToString()
         {
-            StringBuilder result;
             int indent;
 
-            result = new StringBuilder();
+            var result = new StringBuilder();
             indent = -1;
 
             if (_documentRoot != null)
             {
-                this.WriteTagString(_documentRoot, result, ref indent);
+                WriteTagString(_documentRoot, result, ref indent);
             }
 
             return result.ToString();
@@ -354,10 +334,7 @@ namespace NBT
 
         private void WriteTagString(Tag tag, StringBuilder result, ref int indent)
         {
-            ICollectionTag collection;
-            ICollectionTag parentCollection;
-
-            collection = tag as ICollectionTag;
+            var collection = tag as ICollectionTag;
 
             indent++;
 
@@ -365,7 +342,7 @@ namespace NBT
 
             result.Append(tag.Type.ToString().ToLowerInvariant());
 
-            parentCollection = tag.Parent as ICollectionTag;
+            var parentCollection = tag.Parent as ICollectionTag;
             if (parentCollection != null && parentCollection.IsList)
             {
                 result.Append('#');
@@ -386,9 +363,9 @@ namespace NBT
 
             if (collection != null)
             {
-                foreach (Tag child in collection.Values)
+                foreach (var child in collection.Values)
                 {
-                    this.WriteTagString(child, result, ref indent);
+                    WriteTagString(child, result, ref indent);
                 }
             }
 

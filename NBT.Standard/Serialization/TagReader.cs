@@ -21,9 +21,7 @@
         /// </returns>
         public TagCompound ReadDocument()
         {
-            TagCompound tag;
-
-            tag = (TagCompound) this.ReadTag();
+            var tag = (TagCompound) ReadTag();
 
             return tag;
         }

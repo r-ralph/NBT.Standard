@@ -9,7 +9,7 @@ namespace NBT
     {
         #region Constants
 
-        private static readonly char[] _queryDelimiters =
+        private static readonly char[] QueryDelimiters =
         {
             '\\',
             '/'
@@ -43,7 +43,7 @@ namespace NBT
         public TagCompound(string name, TagDictionary value)
             : base(name)
         {
-            this.Value = value;
+            Value = value;
         }
 
         #endregion
@@ -53,10 +53,7 @@ namespace NBT
         /// <summary>
         /// Gets the number of child <see cref="Tag"/> objects actually contained in the <see cref="TagCompound"/>.
         /// </summary>
-        public int Count
-        {
-            get { return _value.Count; }
-        }
+        public int Count => _value.Count;
 
         /// <summary>
         /// Gets the <see cref="Tag"/> with the specified name.
@@ -65,10 +62,7 @@ namespace NBT
         /// <returns>
         /// The <see cref="Tag"/> with the specified name. If a tag with the specified name is not found, an exception is thrown.
         /// </returns>
-        public Tag this[string name]
-        {
-            get { return _value[name]; }
-        }
+        public Tag this[string name] => _value[name];
 
         /// <summary>
         /// Gets the <see cref="Tag"/> at the specified index.
@@ -77,33 +71,22 @@ namespace NBT
         /// <returns>
         /// The <see cref="Tag"/> at the specified index.
         /// </returns>
-        public Tag this[int index]
-        {
-            get { return _value[index]; }
-        }
+        public Tag this[int index] => _value[index];
 
         /// <inheritdoc cref="Tag.Type"/>
-        public override TagType Type
-        {
-            get { return TagType.Compound; }
-        }
+        public override TagType Type => TagType.Compound;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue(typeof(TagDictionary), null)]
         public TagDictionary Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if (!ReferenceEquals(_value, value))
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value));
-                    }
-
-                    _value = value;
+                    _value = value ?? throw new ArgumentNullException(nameof(value));
                     value.Owner = this;
                 }
             }
@@ -115,76 +98,68 @@ namespace NBT
 
         public bool Contains(string name)
         {
-            return this.Value.Contains(name);
+            return Value.Contains(name);
         }
 
         public bool GetBooleanValue(string name)
         {
-            return this.GetBooleanValue(name, false);
+            return GetBooleanValue(name, false);
         }
 
         public bool GetBooleanValue(string name, bool defaultValue)
         {
-            TagByte value;
-
-            value = this.GetTag<TagByte>(name);
+            var value = GetTag<TagByte>(name);
 
             return value != null ? value.Value != 0 : defaultValue;
         }
 
         public TagByte GetByte(string name)
         {
-            return this.GetTag<TagByte>(name);
+            return GetTag<TagByte>(name);
         }
 
         public TagByteArray GetByteArray(string name)
         {
-            return this.GetTag<TagByteArray>(name);
+            return GetTag<TagByteArray>(name);
         }
 
         public byte[] GetByteArrayValue(string name)
         {
-            return this.GetByteArrayValue(name, new byte[0]);
+            return GetByteArrayValue(name, new byte[0]);
         }
 
         public byte[] GetByteArrayValue(string name, byte[] defaultValue)
         {
-            TagByteArray value;
-
-            value = this.GetTag<TagByteArray>(name);
+            var value = GetTag<TagByteArray>(name);
 
             return value != null ? value.Value : defaultValue;
         }
 
         public byte GetByteValue(string name)
         {
-            return this.GetByteValue(name, default(byte));
+            return GetByteValue(name, default(byte));
         }
 
         public byte GetByteValue(string name, byte defaultValue)
         {
-            TagByte value;
-
-            value = this.GetTag<TagByte>(name);
+            var value = GetTag<TagByte>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public TagCompound GetCompound(string name)
         {
-            return this.GetTag<TagCompound>(name);
+            return GetTag<TagCompound>(name);
         }
 
         public DateTime GetDateTimeValue(string name)
         {
-            return this.GetDateTimeValue(name, DateTime.MinValue);
+            return GetDateTimeValue(name, DateTime.MinValue);
         }
 
         public DateTime GetDateTimeValue(string name, DateTime defaultValue)
         {
-            TagString value;
-
-            value = this.GetTag<TagString>(name);
+            var value = GetTag<TagString>(name);
 
             return value != null
                 ? DateTime.Parse(value.Value, CultureInfo.InvariantCulture).ToUniversalTime()
@@ -193,52 +168,46 @@ namespace NBT
 
         public TagDouble GetDouble(string name)
         {
-            return this.GetTag<TagDouble>(name);
+            return GetTag<TagDouble>(name);
         }
 
         public double GetDoubleValue(string name)
         {
-            return this.GetDoubleValue(name, 0);
+            return GetDoubleValue(name, 0);
         }
 
         public double GetDoubleValue(string name, double defaultValue)
         {
-            TagDouble value;
-
-            value = this.GetTag<TagDouble>(name);
+            var value = GetTag<TagDouble>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public TagFloat GetFloat(string name)
         {
-            return this.GetTag<TagFloat>(name);
+            return GetTag<TagFloat>(name);
         }
 
         public float GetFloatValue(string name)
         {
-            return this.GetFloatValue(name, 0);
+            return GetFloatValue(name, 0);
         }
 
         public float GetFloatValue(string name, float defaultValue)
         {
-            TagFloat value;
-
-            value = this.GetTag<TagFloat>(name);
+            var value = GetTag<TagFloat>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public Guid GetGuidValue(string name)
         {
-            return this.GetGuidValue(name, Guid.Empty);
+            return GetGuidValue(name, Guid.Empty);
         }
 
         public Guid GetGuidValue(string name, Guid defaultValue)
         {
-            TagByteArray tag;
-
-            tag = this.GetByteArray(name);
+            var tag = GetByteArray(name);
 
             return tag != null ? new Guid(tag.Value) : defaultValue;
         }
@@ -250,17 +219,17 @@ namespace NBT
             unchecked // Overflow is fine, just wrap
             {
                 int hash;
-                TagDictionary values;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
 
-                values = this.Value;
+                var values = Value;
 
                 if (values != null)
                 {
-                    for (int i = 0; i < values.Count; i++)
+                    for (var i = 0; i < values.Count; i++)
                     {
+                        // ReSharper disable once NonReadonlyMemberInGetHashCode
                         hash = hash * 23 + _value[i].GetHashCode();
                     }
                 }
@@ -271,116 +240,103 @@ namespace NBT
 
         public TagInt GetInt(string name)
         {
-            return this.GetTag<TagInt>(name);
+            return GetTag<TagInt>(name);
         }
 
         public TagIntArray GetIntArray(string name)
         {
-            return this.GetTag<TagIntArray>(name);
+            return GetTag<TagIntArray>(name);
         }
 
         public int[] GetIntArrayValue(string name)
         {
-            return this.GetIntArrayValue(name, new int[0]);
+            return GetIntArrayValue(name, new int[0]);
         }
 
         public int[] GetIntArrayValue(string name, int[] defaultValue)
         {
-            TagIntArray value;
-
-            value = this.GetTag<TagIntArray>(name);
+            var value = GetTag<TagIntArray>(name);
 
             return value != null ? value.Value : defaultValue;
         }
 
         public int GetIntValue(string name)
         {
-            return this.GetIntValue(name, 0);
+            return GetIntValue(name, 0);
         }
 
         public int GetIntValue(string name, int defaultValue)
         {
-            TagInt value;
-
-            value = this.GetTag<TagInt>(name);
+            var value = GetTag<TagInt>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public TagList GetList(string name)
         {
-            return this.GetTag<TagList>(name);
+            return GetTag<TagList>(name);
         }
 
         public TagLong GetLong(string name)
         {
-            return this.GetTag<TagLong>(name);
+            return GetTag<TagLong>(name);
         }
 
         public long GetLongValue(string name)
         {
-            return this.GetLongValue(name, 0);
+            return GetLongValue(name, 0);
         }
 
         public long GetLongValue(string name, long defaultValue)
         {
-            TagLong value;
-
-            value = this.GetTag<TagLong>(name);
+            var value = GetTag<TagLong>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public TagShort GetShort(string name)
         {
-            return this.GetTag<TagShort>(name);
+            return GetTag<TagShort>(name);
         }
 
         public short GetShortValue(string name)
         {
-            return this.GetShortValue(name, 0);
+            return GetShortValue(name, 0);
         }
 
         public short GetShortValue(string name, short defaultValue)
         {
-            TagShort value;
-
-            value = this.GetTag<TagShort>(name);
+            var value = GetTag<TagShort>(name);
 
             return value?.Value ?? defaultValue;
         }
 
         public TagString GetString(string name)
         {
-            return this.GetTag<TagString>(name);
+            return GetTag<TagString>(name);
         }
 
         public string GetStringValue(string name)
         {
-            return this.GetStringValue(name, null);
+            return GetStringValue(name, null);
         }
 
         public string GetStringValue(string name, string defaultValue)
         {
-            TagString value;
-
-            value = this.GetTag<TagString>(name);
+            var value = GetTag<TagString>(name);
 
             return value != null ? value.Value : defaultValue;
         }
 
         public T GetTag<T>(string name) where T : Tag
         {
-            Tag value;
-
-            this.Value.TryGetValue(name, out value);
-
+            Value.TryGetValue(name, out Tag value);
             return (T) value;
         }
 
         public Tag GetTag(string name)
         {
-            return this.GetTag<Tag>(name);
+            return GetTag<Tag>(name);
         }
 
         public override object GetValue()
@@ -390,22 +346,18 @@ namespace NBT
 
         public Tag Query(string query)
         {
-            return this.Query<Tag>(query);
+            return Query<Tag>(query);
         }
 
         public T Query<T>(string query) where T : Tag
         {
-            string[] parts;
-            Tag element;
-            bool failed;
-
-            parts = query.Split(_queryDelimiters);
-            element = this;
-            failed = false;
+            var parts = query.Split(QueryDelimiters);
+            Tag element = this;
+            var failed = false;
 
             // HACK: This is all quickly thrown together
 
-            foreach (string part in parts)
+            foreach (var part in parts)
             {
                 if (part.IndexOf('[') != -1)
                 {
@@ -417,22 +369,16 @@ namespace NBT
 
                     if (attributePosition != -1)
                     {
-                        string name;
-                        string value;
-                        TagList list;
-
-                        name = part.Substring(1, attributePosition - 1);
-                        value = part.Substring(attributePosition + 1, part.Length - (attributePosition + 2));
-                        list = element as TagList;
+                        var name = part.Substring(1, attributePosition - 1);
+                        var value = part.Substring(attributePosition + 1, part.Length - (attributePosition + 2));
+                        var list = element as TagList;
 
                         if (list != null)
                         {
                             // ReSharper disable once LoopCanBePartlyConvertedToQuery
-                            foreach (Tag tag in list.Value)
+                            foreach (var tag in list.Value)
                             {
-                                TagCompound compound;
-
-                                compound = tag as TagCompound;
+                                var compound = tag as TagCompound;
 
                                 if (compound != null && compound.GetStringValue(name) == value)
                                 {
@@ -453,9 +399,7 @@ namespace NBT
                 }
                 else
                 {
-                    ICollectionTag container;
-
-                    container = element as ICollectionTag;
+                    var container = element as ICollectionTag;
 
                     if (container != null && container.IsList)
                     {
@@ -476,9 +420,7 @@ namespace NBT
                     else
                     {
                         // compoound
-                        TagCompound compound;
-
-                        compound = (TagCompound) element;
+                        var compound = (TagCompound) element;
 
                         if (!compound.Value.TryGetValue(part, out element))
                         {
@@ -495,21 +437,19 @@ namespace NBT
 
         public T QueryValue<T>(string query)
         {
-            return this.QueryValue(query, default(T));
+            return QueryValue(query, default(T));
         }
 
         public T QueryValue<T>(string query, T defaultValue)
         {
-            Tag tag;
-
-            tag = this.Query<Tag>(query);
+            var tag = Query<Tag>(query);
 
             return tag != null ? (T) tag.GetValue() : defaultValue;
         }
 
         public override void SetValue(object value)
         {
-            this.Value = (TagDictionary) value;
+            Value = (TagDictionary) value;
         }
 
         public override string ToString()
@@ -518,7 +458,7 @@ namespace NBT
 
             count = _value?.Count ?? 0;
 
-            return string.Concat("[", this.Type, ": ", this.Name, "] (", count.ToString(CultureInfo.InvariantCulture),
+            return string.Concat("[", Type, ": ", Name, "] (", count.ToString(CultureInfo.InvariantCulture),
                 " items)");
         }
 
@@ -531,21 +471,15 @@ namespace NBT
 
         #region ICollectionTag Interface
 
-        bool ICollectionTag.IsList
-        {
-            get { return false; }
-        }
+        bool ICollectionTag.IsList => false;
 
         TagType ICollectionTag.ListType
         {
-            get { return TagType.None; }
-            set { throw new NotSupportedException("Compounds cannot be restricted to a single type."); }
+            get => TagType.None;
+            set => throw new NotSupportedException("Compounds cannot be restricted to a single type.");
         }
 
-        IList<Tag> ICollectionTag.Values
-        {
-            get { return this.Value; }
-        }
+        IList<Tag> ICollectionTag.Values => Value;
 
         #endregion
 
@@ -559,25 +493,19 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    IList<Tag> src;
-                    IList<Tag> dst;
-
-                    src = this.Value;
-                    dst = other.Value;
+                    IList<Tag> src = Value;
+                    IList<Tag> dst = other.Value;
 
                     result = src.Count == dst.Count;
 
-                    for (int i = 0; i < src.Count; i++)
+                    for (var i = 0; i < src.Count; i++)
                     {
-                        Tag srcTag;
-                        Tag dstTag;
-
-                        srcTag = src[i];
-                        dstTag = dst[i];
+                        var srcTag = src[i];
+                        var dstTag = dst[i];
 
                         if (!srcTag.Equals(dstTag))
                         {

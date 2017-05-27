@@ -62,7 +62,7 @@ namespace NBT.Serialization
 
         public void WriteStartArray(TagType type, int count)
         {
-            this.WriteStartArray(string.Empty, type, count);
+            WriteStartArray(string.Empty, type, count);
         }
 
         public abstract void WriteStartArray(string name, TagType type, int count);
@@ -71,12 +71,12 @@ namespace NBT.Serialization
 
         public void WriteStartTag(Tag tag)
         {
-            this.WriteStartTag(tag.Name, tag.Type);
+            WriteStartTag(tag.Name, tag.Type);
         }
 
         public void WriteStartTag(TagType type)
         {
-            this.WriteStartTag(string.Empty, type);
+            WriteStartTag(string.Empty, type);
         }
 
         public abstract void WriteStartTag(string name, TagType type);
@@ -85,9 +85,9 @@ namespace NBT.Serialization
 
         public void WriteTag(Tag tag)
         {
-            this.WriteStartTag(tag);
-            this.WriteValue(tag);
-            this.WriteEndTag();
+            WriteStartTag(tag);
+            WriteValue(tag);
+            WriteEndTag();
         }
 
         #endregion

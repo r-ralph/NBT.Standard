@@ -6,12 +6,6 @@ namespace NBT
 {
     public sealed class TagFloat : Tag, IEquatable<TagFloat>
     {
-        #region Fields
-
-        private float _value;
-
-        #endregion
-
         #region Constructors
 
         public TagFloat()
@@ -32,26 +26,19 @@ namespace NBT
         public TagFloat(string name, float value)
             : base(name)
         {
-            _value = value;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.Float; }
-        }
+        public override TagType Type => TagType.Float;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue(0F)]
-        public float Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public float Value { get; set; }
 
         #endregion
 
@@ -64,8 +51,8 @@ namespace NBT
                 int hash;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                hash = hash * 23 + _value.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                hash = hash * 23 + Value.GetHashCode();
 
                 return hash;
             }
@@ -73,17 +60,17 @@ namespace NBT
 
         public override object GetValue()
         {
-            return _value;
+            return Value;
         }
 
         public override void SetValue(object value)
         {
-            _value = Convert.ToSingle(value);
+            Value = Convert.ToSingle(value);
         }
 
         public override string ToValueString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -98,11 +85,11 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    result = Math.Abs(_value - other.Value) < float.Epsilon;
+                    result = Math.Abs(Value - other.Value) < float.Epsilon;
                 }
             }
 

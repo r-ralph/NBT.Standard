@@ -39,12 +39,12 @@ namespace NBT.Serialization
 
         public override void WriteArrayValue(byte value)
         {
-            this.WriteValue(value);
+            WriteValue(value);
         }
 
         public override void WriteArrayValue(int value)
         {
-            this.WriteValue(value);
+            WriteValue(value);
         }
 
         public override void WriteEndDocument()
@@ -54,7 +54,7 @@ namespace NBT.Serialization
 
         public override void WriteEndTag()
         {
-            _state.EndTag(this.WriteEnd);
+            _state.EndTag(WriteEnd);
         }
 
         public override void WriteStartArray(string name, TagType type, int count)
@@ -73,8 +73,8 @@ namespace NBT.Serialization
                 throw new ArgumentException("Only byte or integer types are supported.", nameof(type));
             }
 
-            this.WriteStartTag(name, type);
-            this.WriteValue(count);
+            WriteStartTag(name, type);
+            WriteValue(count);
         }
 
         public override void WriteStartDocument()
@@ -84,14 +84,12 @@ namespace NBT.Serialization
 
         public override void WriteStartTag(string name, TagType type)
         {
-            TagContainerState currentState;
-
-            currentState = _state.StartTag(type);
+            var currentState = _state.StartTag(type);
 
             if (type != TagType.End && (currentState == null || currentState.ContainerType != TagType.List))
             {
-                this.WriteValue((byte) type);
-                this.WriteValue(name);
+                WriteValue((byte) type);
+                WriteValue(name);
             }
         }
 
@@ -99,41 +97,37 @@ namespace NBT.Serialization
         {
             // HACK: This is messy, rethink
 
-            this.WriteStartTag(name, type);
+            WriteStartTag(name, type);
 
             _state.StartList(listType, count);
 
             _stream.WriteByte((byte) listType);
-            this.WriteValue(count);
+            WriteValue(count);
         }
 
         protected override void WriteValue(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                this.WriteValue((short) 0);
+                WriteValue((short) 0);
             }
             else
             {
-                byte[] buffer;
-
-                buffer = Encoding.UTF8.GetBytes(value);
+                var buffer = Encoding.UTF8.GetBytes(value);
 
                 if (buffer.Length > short.MaxValue)
                 {
                     throw new ArgumentException("String data would be truncated.");
                 }
 
-                this.WriteValue((short) buffer.Length);
+                WriteValue((short) buffer.Length);
                 _stream.Write(buffer, 0, buffer.Length);
             }
         }
 
         protected override void WriteValue(short value)
         {
-            byte[] buffer;
-
-            buffer = BitConverter.GetBytes(value);
+            var buffer = BitConverter.GetBytes(value);
 
             if (IsLittleEndian)
             {
@@ -145,9 +139,7 @@ namespace NBT.Serialization
 
         protected override void WriteValue(long value)
         {
-            byte[] buffer;
-
-            buffer = BitConverter.GetBytes(value);
+            var buffer = BitConverter.GetBytes(value);
 
             if (IsLittleEndian)
             {
@@ -161,23 +153,21 @@ namespace NBT.Serialization
         {
             if (value != null && value.Length != 0)
             {
-                this.WriteValue(value.Length);
-                foreach (int item in value)
+                WriteValue(value.Length);
+                foreach (var item in value)
                 {
-                    this.WriteValue(item);
+                    WriteValue(item);
                 }
             }
             else
             {
-                this.WriteValue(0);
+                WriteValue(0);
             }
         }
 
         protected override void WriteValue(int value)
         {
-            byte[] buffer;
-
-            buffer = BitConverter.GetBytes(value);
+            var buffer = BitConverter.GetBytes(value);
 
             if (IsLittleEndian)
             {
@@ -189,9 +179,7 @@ namespace NBT.Serialization
 
         protected override void WriteValue(float value)
         {
-            byte[] buffer;
-
-            buffer = BitConverter.GetBytes(value);
+            var buffer = BitConverter.GetBytes(value);
 
             if (IsLittleEndian)
             {
@@ -203,9 +191,7 @@ namespace NBT.Serialization
 
         protected override void WriteValue(double value)
         {
-            byte[] buffer;
-
-            buffer = BitConverter.GetBytes(value);
+            var buffer = BitConverter.GetBytes(value);
 
             if (IsLittleEndian)
             {
@@ -224,12 +210,12 @@ namespace NBT.Serialization
         {
             if (value != null && value.Length != 0)
             {
-                this.WriteValue(value.Length);
+                WriteValue(value.Length);
                 _stream.Write(value, 0, value.Length);
             }
             else
             {
-                this.WriteValue(0);
+                WriteValue(0);
             }
         }
 
@@ -239,19 +225,19 @@ namespace NBT.Serialization
 
             _stream.WriteByte((byte) value.LimitType);
 
-            this.WriteValue(value.Count);
+            WriteValue(value.Count);
 
-            foreach (Tag item in value)
+            foreach (var item in value)
             {
-                this.WriteTag(item);
+                WriteTag(item);
             }
         }
 
         protected override void WriteValue(TagDictionary value)
         {
-            foreach (Tag item in value)
+            foreach (var item in value)
             {
-                this.WriteTag(item);
+                WriteTag(item);
             }
         }
 

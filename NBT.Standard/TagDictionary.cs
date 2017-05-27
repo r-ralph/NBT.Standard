@@ -17,12 +17,11 @@ namespace NBT
 
         public Tag Owner
         {
-            get { return _owner; }
+            get => _owner;
             set
             {
                 _owner = value;
-
-                foreach (Tag child in this)
+                foreach (var child in this)
                 {
                     child.Parent = value;
                 }
@@ -35,31 +34,29 @@ namespace NBT
 
         public TagByte Add(string name, bool value)
         {
-            return this.Add(name, (byte) (value ? 1 : 0));
+            return Add(name, (byte) (value ? 1 : 0));
         }
 
         public TagString Add(string name, DateTime value)
         {
-            return this.Add(name, value.ToString("u"));
+            return Add(name, value.ToString("u"));
         }
 
         public TagByteArray Add(string name, Guid value)
         {
-            return this.Add(name, value.ToByteArray());
+            return Add(name, value.ToByteArray());
         }
 
         public Tag Add(string name, TagType tagType)
         {
-            return this.Add(name, tagType, TagType.None);
+            return Add(name, tagType, TagType.None);
         }
 
         public Tag Add(string name, TagType tagType, TagType limitToType)
         {
-            Tag tag;
+            var tag = TagFactory.CreateTag(name, tagType, limitToType);
 
-            tag = TagFactory.CreateTag(name, tagType, limitToType);
-
-            this.Add(tag);
+            Add(tag);
 
             return tag;
         }
@@ -70,59 +67,59 @@ namespace NBT
 
             if (value is byte)
             {
-                result = this.Add(name, (byte) value);
+                result = Add(name, (byte) value);
             }
             else if (value is byte[])
             {
-                result = this.Add(name, (byte[]) value);
+                result = Add(name, (byte[]) value);
             }
             else if (value is int)
             {
-                result = this.Add(name, (int) value);
+                result = Add(name, (int) value);
             }
             else if (value is int[])
             {
-                result = this.Add(name, (int[]) value);
+                result = Add(name, (int[]) value);
             }
             else if (value is float)
             {
-                result = this.Add(name, (float) value);
+                result = Add(name, (float) value);
             }
             else if (value is double)
             {
-                result = this.Add(name, (double) value);
+                result = Add(name, (double) value);
             }
             else if (value is long)
             {
-                result = this.Add(name, (long) value);
+                result = Add(name, (long) value);
             }
             else if (value is short)
             {
-                result = this.Add(name, (short) value);
+                result = Add(name, (short) value);
             }
             else if (value is string)
             {
-                result = this.Add(name, (string) value);
+                result = Add(name, (string) value);
             }
             else if (value is DateTime)
             {
-                result = this.Add(name, (DateTime) value);
+                result = Add(name, (DateTime) value);
             }
             else if (value is Guid)
             {
-                result = this.Add(name, (Guid) value);
+                result = Add(name, (Guid) value);
             }
             else if (value is bool)
             {
-                result = this.Add(name, (bool) value);
+                result = Add(name, (bool) value);
             }
             else if (value is TagDictionary)
             {
-                result = this.Add(name, (TagDictionary) value);
+                result = Add(name, (TagDictionary) value);
             }
             else if (value is TagCollection)
             {
-                result = this.Add(name, (TagCollection) value);
+                result = Add(name, (TagCollection) value);
             }
             else
             {
@@ -138,9 +135,9 @@ namespace NBT
         /// <param name="values">An IEnumerable&lt;Tag&gt; of items to append to the <see cref="TagDictionary"/>.</param>
         public void AddRange(IEnumerable<KeyValuePair<string, object>> values)
         {
-            foreach (KeyValuePair<string, object> value in values)
+            foreach (var value in values)
             {
-                this.Add(value.Key, value.Value);
+                Add(value.Key, value.Value);
             }
         }
 
@@ -150,9 +147,9 @@ namespace NBT
         /// <param name="values">An IEnumerable&lt;Tag&gt; of items to append to the <see cref="TagDictionary"/>.</param>
         public void AddRange(IDictionary<string, object> values)
         {
-            foreach (KeyValuePair<string, object> value in values)
+            foreach (var value in values)
             {
-                this.Add(value.Key, value.Value);
+                Add(value.Key, value.Value);
             }
         }
 
@@ -162,9 +159,9 @@ namespace NBT
         /// <param name="values">An IEnumerable&lt;Tag&gt; of items to append to the <see cref="TagDictionary"/>.</param>
         public void AddRange(IEnumerable<Tag> values)
         {
-            foreach (Tag value in values)
+            foreach (var value in values)
             {
-                this.Add(value);
+                Add(value);
             }
         }
 
@@ -176,13 +173,11 @@ namespace NBT
         /// </returns>
         public override string ToString()
         {
-            StringBuilder sb;
-
-            sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append('[');
 
-            foreach (Tag tag in this)
+            foreach (var tag in this)
             {
                 if (sb.Length > 1)
                 {
@@ -201,9 +196,9 @@ namespace NBT
         {
             bool result;
 
-            if (this.Dictionary != null)
+            if (Dictionary != null)
             {
-                result = this.Dictionary.TryGetValue(key, out value);
+                result = Dictionary.TryGetValue(key, out value);
             }
             else
             {
@@ -216,7 +211,7 @@ namespace NBT
 
         protected override void ClearItems()
         {
-            foreach (Tag item in this)
+            foreach (var item in this)
             {
                 item.Parent = null;
             }
@@ -231,16 +226,14 @@ namespace NBT
 
         protected override void InsertItem(int index, Tag item)
         {
-            item.Parent = this.Owner;
+            item.Parent = Owner;
 
             base.InsertItem(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            Tag item;
-
-            item = this[index];
+            var item = this[index];
             item.Parent = null;
 
             base.RemoveItem(index);
@@ -248,7 +241,7 @@ namespace NBT
 
         internal void ChangeKey(Tag item, string newKey)
         {
-            this.ChangeItemKey(item, newKey);
+            ChangeItemKey(item, newKey);
         }
 
         #endregion

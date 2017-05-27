@@ -16,8 +16,6 @@ namespace NBT
 
         private string _name;
 
-        private Tag _parent;
-
         #endregion
 
         #region Constructors
@@ -41,20 +39,14 @@ namespace NBT
         {
             get
             {
-                Tag[] ancestors;
-                StringBuilder sb;
-
-                ancestors = this.GetAncestors();
-                sb = new StringBuilder();
+                var ancestors = GetAncestors();
+                var sb = new StringBuilder();
 
                 // ReSharper disable once ForCanBeConvertedToForeach
-                for (int i = 0; i < ancestors.Length; i++)
+                for (var i = 0; i < ancestors.Length; i++)
                 {
-                    Tag ancestor;
-                    ICollectionTag container;
-
-                    ancestor = ancestors[i];
-                    container = ancestor.Parent as ICollectionTag;
+                    var ancestor = ancestors[i];
+                    var container = ancestor.Parent as ICollectionTag;
 
                     if (sb.Length != 0)
                     {
@@ -93,7 +85,7 @@ namespace NBT
         [DefaultValue("")]
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (value == null)
@@ -101,13 +93,10 @@ namespace NBT
                     value = string.Empty;
                 }
 
-                if (this.Name != value)
+                if (Name != value)
                 {
-                    ICollectionTag collection;
-                    TagDictionary values;
-
-                    collection = _parent as ICollectionTag;
-                    values = collection?.Values as TagDictionary;
+                    var collection = Parent as ICollectionTag;
+                    var values = collection?.Values as TagDictionary;
 
                     values?.ChangeKey(this, value);
 
@@ -125,11 +114,7 @@ namespace NBT
         //TODO: Browsable
         //[Browsable(false)]
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Tag Parent
-        {
-            get { return _parent; }
-            internal set { _parent = value; }
-        }
+        public Tag Parent { get; internal set; }
 
         /// <summary>
         /// Gets the tag type.
@@ -157,7 +142,7 @@ namespace NBT
 #pragma warning restore 659
         {
             return !ReferenceEquals(null, obj) && (ReferenceEquals(this, obj) ||
-                                                   obj.GetType() == this.GetType() && this.Equals((Tag) obj));
+                                                   obj.GetType() == GetType() && Equals((Tag) obj));
         }
 
         public Tag[] Flatten()
@@ -175,11 +160,9 @@ namespace NBT
             else
             {
                 // multiple values;
-                List<Tag> tags;
+                var tags = new List<Tag>();
 
-                tags = new List<Tag>();
-
-                this.FlattenTag(this, tags);
+                FlattenTag(this, tags);
 
                 results = tags.ToArray();
             }
@@ -189,13 +172,10 @@ namespace NBT
 
         public Tag[] GetAncestors()
         {
-            Tag[] results;
-            List<Tag> tags;
-            Tag tag;
             int arrayIndex;
 
-            tags = new List<Tag>();
-            tag = _parent;
+            var tags = new List<Tag>();
+            var tag = Parent;
 
             while (tag != null)
             {
@@ -203,10 +183,10 @@ namespace NBT
                 tag = tag.Parent;
             }
 
-            results = new Tag[tags.Count];
+            var results = new Tag[tags.Count];
             arrayIndex = 0;
 
-            for (int i = tags.Count; i > 0; i--)
+            for (var i = tags.Count; i > 0; i--)
             {
                 results[arrayIndex++] = tags[i - 1];
             }
@@ -238,7 +218,7 @@ namespace NBT
         /// </returns>
         public override string ToString()
         {
-            return string.Concat("[", this.Type, ": ", this.Name, "=", this.ToValueString(), "]");
+            return string.Concat("[", Type, ": ", Name, "=", ToValueString(), "]");
         }
 
         /// <summary>
@@ -251,16 +231,14 @@ namespace NBT
 
         private void FlattenTag(Tag tag, ICollection<Tag> tags)
         {
-            ICollectionTag collectionTag;
-
             tags.Add(tag);
 
-            collectionTag = tag as ICollectionTag;
+            var collectionTag = tag as ICollectionTag;
             if (collectionTag != null)
             {
-                foreach (Tag childTag in collectionTag.Values)
+                foreach (var childTag in collectionTag.Values)
                 {
-                    this.FlattenTag(childTag, tags);
+                    FlattenTag(childTag, tags);
                 }
             }
         }
@@ -288,7 +266,7 @@ namespace NBT
 
                 if (result)
                 {
-                    result = Equals(this.GetValue(), other.GetValue());
+                    result = Equals(GetValue(), other.GetValue());
                 }
             }
 

@@ -6,12 +6,6 @@ namespace NBT
 {
     public sealed class TagShort : Tag, IEquatable<TagShort>
     {
-        #region Fields
-
-        private short _value;
-
-        #endregion
-
         #region Constructors
 
         public TagShort()
@@ -32,26 +26,19 @@ namespace NBT
         public TagShort(string name, short value)
             : base(name)
         {
-            _value = value;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.Short; }
-        }
+        public override TagType Type { get; } = TagType.Short;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue((short) 0)]
-        public short Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
+        public short Value { get; set; }
 
         #endregion
 
@@ -64,8 +51,9 @@ namespace NBT
                 int hash;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                hash = hash * 23 + _value.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                hash = hash * 23 + Value.GetHashCode();
 
                 return hash;
             }
@@ -73,17 +61,17 @@ namespace NBT
 
         public override object GetValue()
         {
-            return _value;
+            return Value;
         }
 
         public override void SetValue(object value)
         {
-            _value = Convert.ToInt16(value);
+            Value = Convert.ToInt16(value);
         }
 
         public override string ToValueString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion
@@ -98,11 +86,11 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name);
+                result = string.Equals(Name, other.Name);
 
                 if (result)
                 {
-                    result = _value == other.Value;
+                    result = Value == other.Value;
                 }
             }
 

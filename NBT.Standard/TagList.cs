@@ -48,40 +48,29 @@ namespace NBT
         public TagList(string name, TagType listType, TagCollection value)
             : base(name)
         {
-            this.ListType = listType;
-            this.Value = value;
+            ListType = listType;
+            Value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public int Count
-        {
-            get { return _value.Count; }
-        }
+        public int Count => _value.Count;
 
-        public override TagType Type
-        {
-            get { return TagType.List; }
-        }
+        public override TagType Type => TagType.List;
 
         //TODO: Category
         //[Category("Data")]
         [DefaultValue(typeof(TagCollection), null)]
         public TagCollection Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if (!ReferenceEquals(_value, value))
                 {
-                    if (value == null)
-                    {
-                        throw new ArgumentNullException(nameof(value));
-                    }
-
-                    _value = value;
+                    _value = value ?? throw new ArgumentNullException(nameof(value));
                     value.Owner = this;
                 }
             }
@@ -98,17 +87,17 @@ namespace NBT
             unchecked // Overflow is fine, just wrap
             {
                 int hash;
-                TagCollection values;
 
                 hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
+                hash = hash * 23 + Name.GetHashCode();
 
-                values = this.Value;
+                var values = Value;
 
                 if (values != null)
                 {
-                    for (int i = 0; i < values.Count; i++)
+                    for (var i = 0; i < values.Count; i++)
                     {
+                        // ReSharper disable once NonReadonlyMemberInGetHashCode
                         hash = hash * 23 + _value[i].GetHashCode();
                     }
                 }
@@ -124,7 +113,7 @@ namespace NBT
 
         public override void SetValue(object value)
         {
-            this.Value = (TagCollection) value;
+            Value = (TagCollection) value;
         }
 
         public override string ToString()
@@ -133,7 +122,7 @@ namespace NBT
 
             count = _value.Count;
 
-            return string.Concat("[", this.Type, ": ", this.Name, "] (", count.ToString(CultureInfo.InvariantCulture),
+            return string.Concat("[", Type, ": ", Name, "] (", count.ToString(CultureInfo.InvariantCulture),
                 " items)");
         }
 
@@ -148,25 +137,19 @@ namespace NBT
 
         public TagType ListType
         {
-            get { return this.Value?.LimitType ?? TagType.None; }
+            get => Value?.LimitType ?? TagType.None;
             set
             {
-                if (this.Value == null || _value.LimitType != value)
+                if (Value == null || _value.LimitType != value)
                 {
-                    this.Value = new TagCollection(value);
+                    Value = new TagCollection(value);
                 }
             }
         }
 
-        bool ICollectionTag.IsList
-        {
-            get { return true; }
-        }
+        bool ICollectionTag.IsList => true;
 
-        IList<Tag> ICollectionTag.Values
-        {
-            get { return this.Value; }
-        }
+        IList<Tag> ICollectionTag.Values => Value;
 
         #endregion
 
@@ -180,25 +163,19 @@ namespace NBT
 
             if (result && !ReferenceEquals(this, other))
             {
-                result = string.Equals(this.Name, other.Name) && this.ListType == other.ListType;
+                result = string.Equals(Name, other.Name) && ListType == other.ListType;
 
                 if (result)
                 {
-                    IList<Tag> src;
-                    IList<Tag> dst;
-
-                    src = this.Value;
-                    dst = other.Value;
+                    IList<Tag> src = Value;
+                    IList<Tag> dst = other.Value;
 
                     result = src.Count == dst.Count;
 
-                    for (int i = 0; i < src.Count; i++)
+                    for (var i = 0; i < src.Count; i++)
                     {
-                        Tag srcTag;
-                        Tag dstTag;
-
-                        srcTag = src[i];
-                        dstTag = dst[i];
+                        var srcTag = src[i];
+                        var dstTag = dst[i];
 
                         if (!srcTag.Equals(dstTag))
                         {

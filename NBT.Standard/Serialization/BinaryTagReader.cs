@@ -120,10 +120,9 @@ namespace NBT.Serialization
         public override byte[] ReadByteArray()
         {
             int length;
-            byte[] data;
 
-            length = this.ReadInt();
-            data = new byte[length];
+            length = ReadInt();
+            var data = new byte[length];
 
             if (length != _stream.Read(data, 0, length))
             {
@@ -135,17 +134,14 @@ namespace NBT.Serialization
 
         public override TagDictionary ReadCompound()
         {
-            TagDictionary results;
-            Tag tag;
+            var results = new TagDictionary();
 
-            results = new TagDictionary();
-
-            tag = this.ReadTag();
+            var tag = ReadTag();
 
             while (tag.Type != TagType.End)
             {
                 results.Add(tag);
-                tag = this.ReadTag();
+                tag = ReadTag();
             }
 
             return results;
@@ -153,9 +149,7 @@ namespace NBT.Serialization
 
         public override double ReadDouble()
         {
-            byte[] data;
-
-            data = new byte[BitHelper.DoubleSize];
+            var data = new byte[BitHelper.DoubleSize];
 
             if (BitHelper.DoubleSize != _stream.Read(data, 0, BitHelper.DoubleSize))
             {
@@ -172,9 +166,7 @@ namespace NBT.Serialization
 
         public override float ReadFloat()
         {
-            byte[] data;
-
-            data = new byte[BitHelper.FloatSize];
+            var data = new byte[BitHelper.FloatSize];
 
             if (BitHelper.FloatSize != _stream.Read(data, 0, BitHelper.FloatSize))
             {
@@ -191,9 +183,7 @@ namespace NBT.Serialization
 
         public override int ReadInt()
         {
-            byte[] data;
-
-            data = new byte[BitHelper.IntSize];
+            var data = new byte[BitHelper.IntSize];
 
             if (BitHelper.IntSize != _stream.Read(data, 0, BitHelper.IntSize))
             {
@@ -212,23 +202,21 @@ namespace NBT.Serialization
         {
             int length;
             int bufferLength;
-            byte[] buffer;
-            int[] values;
             bool isLittleEndian;
 
             isLittleEndian = TagWriter.IsLittleEndian;
-            length = this.ReadInt();
+            length = ReadInt();
             bufferLength = length * BitHelper.IntSize;
-            buffer = new byte[bufferLength];
+            var buffer = new byte[bufferLength];
 
             if (bufferLength != _stream.Read(buffer, 0, bufferLength))
             {
                 throw new InvalidDataException();
             }
 
-            values = new int[length];
+            var values = new int[length];
 
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 if (isLittleEndian)
                 {
@@ -243,19 +231,17 @@ namespace NBT.Serialization
 
         public override TagCollection ReadList()
         {
-            TagCollection tags;
             int length;
-            TagType listType;
 
-            listType = (TagType)this.ReadByte();
+            var listType = (TagType)ReadByte();
 
             if (listType < TagType.Byte || listType > TagType.IntArray)
             {
                 throw new InvalidDataException($"Unexpected list type '{listType}' found.");
             }
 
-            tags = new TagCollection(listType);
-            length = this.ReadInt();
+            var tags = new TagCollection(listType);
+            length = ReadInt();
 
             for (int i = 0; i < length; i++)
             {
@@ -268,47 +254,47 @@ namespace NBT.Serialization
                 switch (listType)
                 {
                     case TagType.Byte:
-                        tag = TagFactory.CreateTag(this.ReadByte());
+                        tag = TagFactory.CreateTag(ReadByte());
                         break;
 
                     case TagType.ByteArray:
-                        tag = TagFactory.CreateTag(this.ReadByteArray());
+                        tag = TagFactory.CreateTag(ReadByteArray());
                         break;
 
                     case TagType.Compound:
-                        tag = TagFactory.CreateTag(this.ReadCompound());
+                        tag = TagFactory.CreateTag(ReadCompound());
                         break;
 
                     case TagType.Double:
-                        tag = TagFactory.CreateTag(this.ReadDouble());
+                        tag = TagFactory.CreateTag(ReadDouble());
                         break;
 
                     case TagType.Float:
-                        tag = TagFactory.CreateTag(this.ReadFloat());
+                        tag = TagFactory.CreateTag(ReadFloat());
                         break;
 
                     case TagType.Int:
-                        tag = TagFactory.CreateTag(this.ReadInt());
+                        tag = TagFactory.CreateTag(ReadInt());
                         break;
 
                     case TagType.IntArray:
-                        tag = TagFactory.CreateTag(this.ReadIntArray());
+                        tag = TagFactory.CreateTag(ReadIntArray());
                         break;
 
                     case TagType.List:
-                        tag = TagFactory.CreateTag(this.ReadList());
+                        tag = TagFactory.CreateTag(ReadList());
                         break;
 
                     case TagType.Long:
-                        tag = TagFactory.CreateTag(this.ReadLong());
+                        tag = TagFactory.CreateTag(ReadLong());
                         break;
 
                     case TagType.Short:
-                        tag = TagFactory.CreateTag(this.ReadShort());
+                        tag = TagFactory.CreateTag(ReadShort());
                         break;
 
                     case TagType.String:
-                        tag = TagFactory.CreateTag(this.ReadString());
+                        tag = TagFactory.CreateTag(ReadString());
                         break;
 
                     // Can never be hit due to the type check above
@@ -326,9 +312,7 @@ namespace NBT.Serialization
 
         public override long ReadLong()
         {
-            byte[] data;
-
-            data = new byte[BitHelper.LongSize];
+            var data = new byte[BitHelper.LongSize];
 
             if (BitHelper.LongSize != _stream.Read(data, 0, BitHelper.LongSize))
             {
@@ -345,9 +329,7 @@ namespace NBT.Serialization
 
         public override short ReadShort()
         {
-            byte[] data;
-
-            data = new byte[BitHelper.ShortSize];
+            var data = new byte[BitHelper.ShortSize];
 
             if (BitHelper.ShortSize != _stream.Read(data, 0, BitHelper.ShortSize))
             {
@@ -365,10 +347,9 @@ namespace NBT.Serialization
         public override string ReadString()
         {
             short length;
-            byte[] data;
 
-            length = this.ReadShort();
-            data = new byte[length];
+            length = ReadShort();
+            var data = new byte[length];
 
             if (length != _stream.Read(data, 0, length))
             {
@@ -380,30 +361,27 @@ namespace NBT.Serialization
 
         public override Tag ReadTag()
         {
-            Tag result;
-            TagType type;
             string name;
-            TagContainerState state;
 
-            type = this.ReadTagType();
+            var type = ReadTagType();
 
             if (type > TagType.IntArray)
             {
                 throw new InvalidDataException($"Unrecognized tag type: {type}.");
             }
 
-            state = _state.StartTag(type);
+            var state = _state.StartTag(type);
 
             if (type != TagType.End && (state == null || state.ContainerType != TagType.List))
             {
-                name = this.ReadTagName();
+                name = ReadTagName();
             }
             else
             {
                 name = string.Empty;
             }
 
-            result = null;
+            Tag result = null;
 
             switch (type)
             {
@@ -412,47 +390,47 @@ namespace NBT.Serialization
                     break;
 
                 case TagType.Byte:
-                    result = TagFactory.CreateTag(name, this.ReadByte());
+                    result = TagFactory.CreateTag(name, ReadByte());
                     break;
 
                 case TagType.Short:
-                    result = TagFactory.CreateTag(name, this.ReadShort());
+                    result = TagFactory.CreateTag(name, ReadShort());
                     break;
 
                 case TagType.Int:
-                    result = TagFactory.CreateTag(name, this.ReadInt());
+                    result = TagFactory.CreateTag(name, ReadInt());
                     break;
 
                 case TagType.IntArray:
-                    result = TagFactory.CreateTag(name, this.ReadIntArray());
+                    result = TagFactory.CreateTag(name, ReadIntArray());
                     break;
 
                 case TagType.Long:
-                    result = TagFactory.CreateTag(name, this.ReadLong());
+                    result = TagFactory.CreateTag(name, ReadLong());
                     break;
 
                 case TagType.Float:
-                    result = TagFactory.CreateTag(name, this.ReadFloat());
+                    result = TagFactory.CreateTag(name, ReadFloat());
                     break;
 
                 case TagType.Double:
-                    result = TagFactory.CreateTag(name, this.ReadDouble());
+                    result = TagFactory.CreateTag(name, ReadDouble());
                     break;
 
                 case TagType.ByteArray:
-                    result = TagFactory.CreateTag(name, this.ReadByteArray());
+                    result = TagFactory.CreateTag(name, ReadByteArray());
                     break;
 
                 case TagType.String:
-                    result = TagFactory.CreateTag(name, this.ReadString());
+                    result = TagFactory.CreateTag(name, ReadString());
                     break;
 
                 case TagType.List:
-                    result = TagFactory.CreateTag(name, this.ReadList());
+                    result = TagFactory.CreateTag(name, ReadList());
                     break;
 
                 case TagType.Compound:
-                    result = TagFactory.CreateTag(name, this.ReadCompound());
+                    result = TagFactory.CreateTag(name, ReadCompound());
                     break;
             }
 
@@ -463,7 +441,7 @@ namespace NBT.Serialization
 
         public override string ReadTagName()
         {
-            return this.ReadString();
+            return ReadString();
         }
 
         public override TagType ReadTagType()

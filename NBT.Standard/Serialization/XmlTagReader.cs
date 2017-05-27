@@ -9,7 +9,7 @@ namespace NBT.Serialization
     {
         #region Constants
 
-        private static readonly char[] _arraySeparaters =
+        private static readonly char[] ArraySeparaters =
         {
             ' ',
             '\t',
@@ -33,8 +33,7 @@ namespace NBT.Serialization
             _state.Start();
         }
 
-        public XmlTagReader(Stream stream)
-            : this(XmlReader.Create(stream))
+        public XmlTagReader(Stream stream) : this(XmlReader.Create(stream))
         {
         }
 
@@ -53,11 +52,9 @@ namespace NBT.Serialization
             bool result;
             try
             {
-                string typeName;
+                InitializeReader();
 
-                this.InitializeReader();
-
-                typeName = _reader.GetAttribute("type");
+                var typeName = _reader.GetAttribute("type");
 
                 result = !string.IsNullOrEmpty(typeName) &&
                          (TagType) Enum.Parse(typeof(TagType), typeName, true) == TagType.Compound;
@@ -78,18 +75,15 @@ namespace NBT.Serialization
         public override byte[] ReadByteArray()
         {
             byte[] result;
-            string value;
 
-            value = this.ReadString();
+            var value = ReadString();
 
             if (!string.IsNullOrEmpty(value))
             {
-                string[] values;
-
-                values = value.Split(_arraySeparaters, StringSplitOptions.RemoveEmptyEntries);
+                var values = value.Split(ArraySeparaters, StringSplitOptions.RemoveEmptyEntries);
                 result = new byte[values.Length];
 
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     result[i] = Convert.ToByte(values[i]);
                 }
@@ -104,13 +98,11 @@ namespace NBT.Serialization
 
         public override TagDictionary ReadCompound()
         {
-            TagDictionary value;
-
-            value = new TagDictionary();
+            var value = new TagDictionary();
 
             _reader.Read();
 
-            this.ReadChildValues(value, TagType.None);
+            ReadChildValues(value, TagType.None);
 
             return value;
         }
@@ -133,18 +125,17 @@ namespace NBT.Serialization
         public override int[] ReadIntArray()
         {
             int[] result;
-            string value;
 
-            value = this.ReadString();
+            var value = ReadString();
 
             if (!string.IsNullOrEmpty(value))
             {
                 string[] values;
 
-                values = value.Split(_arraySeparaters, StringSplitOptions.RemoveEmptyEntries);
+                values = value.Split(ArraySeparaters, StringSplitOptions.RemoveEmptyEntries);
                 result = new int[values.Length];
 
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     result[i] = Convert.ToInt32(values[i]);
                 }
@@ -159,22 +150,18 @@ namespace NBT.Serialization
 
         public override TagCollection ReadList()
         {
-            TagCollection value;
-            TagType listType;
-            string listTypeName;
-
-            listTypeName = _reader.GetAttribute("limitType");
+            var listTypeName = _reader.GetAttribute("limitType");
             if (string.IsNullOrEmpty(listTypeName))
             {
                 throw new InvalidDataException("Missing limitType attribute, unable to determine list contents type.");
             }
 
-            listType = (TagType) Enum.Parse(typeof(TagType), listTypeName, true);
-            value = new TagCollection(listType);
+            var listType = (TagType) Enum.Parse(typeof(TagType), listTypeName, true);
+            var value = new TagCollection(listType);
 
             _reader.Read();
 
-            this.ReadChildValues(value, listType);
+            ReadChildValues(value, listType);
 
             return value;
         }
@@ -191,9 +178,7 @@ namespace NBT.Serialization
 
         public override string ReadString()
         {
-            string value;
-
-            value = _reader.ReadElementContentAsString();
+            var value = _reader.ReadElementContentAsString();
             if (string.IsNullOrEmpty(value))
             {
                 value = null;
@@ -204,7 +189,7 @@ namespace NBT.Serialization
 
         public override Tag ReadTag()
         {
-            return this.ReadTag(TagType.None);
+            return ReadTag(TagType.None);
         }
 
         public override string ReadTagName()
@@ -214,7 +199,7 @@ namespace NBT.Serialization
 
         public override TagType ReadTagType()
         {
-            return this.ReadTagType(TagType.None);
+            return ReadTagType(TagType.None);
         }
 
         private void InitializeReader()
@@ -231,7 +216,7 @@ namespace NBT.Serialization
 
             _state.StartList(listType, 0);
 
-            this.SkipWhitespace();
+            SkipWhitespace();
 
             depth = _reader.Depth;
 
@@ -241,9 +226,7 @@ namespace NBT.Serialization
                 {
                     if (_reader.NodeType == XmlNodeType.Element)
                     {
-                        Tag child;
-
-                        child = this.ReadTag(listType);
+                        var child = ReadTag(listType);
                         if (listType != TagType.None)
                         {
                             // sanity check as depending how you
@@ -263,27 +246,24 @@ namespace NBT.Serialization
             else
             {
                 _reader.Read();
-                this.SkipWhitespace();
+                SkipWhitespace();
             }
         }
 
         private Tag ReadTag(TagType defaultTagType)
         {
-            Tag result;
-            TagType type;
             string name;
-            TagContainerState state;
 
-            type = this.ReadTagType(defaultTagType);
+            var type = ReadTagType(defaultTagType);
 
-            state = _state.StartTag(type);
+            var state = _state.StartTag(type);
 
             if (type != TagType.End && (state == null || state.ContainerType != TagType.List))
             {
                 name = _reader.GetAttribute("name");
                 if (string.IsNullOrEmpty(name))
                 {
-                    name = this.ReadTagName();
+                    name = ReadTagName();
                 }
             }
             else
@@ -291,52 +271,52 @@ namespace NBT.Serialization
                 name = string.Empty;
             }
 
-            result = null;
+            Tag result = null;
 
             switch (type)
             {
                 case TagType.Byte:
-                    result = TagFactory.CreateTag(name, this.ReadByte());
+                    result = TagFactory.CreateTag(name, ReadByte());
                     break;
 
                 case TagType.Short:
-                    result = TagFactory.CreateTag(name, this.ReadShort());
+                    result = TagFactory.CreateTag(name, ReadShort());
                     break;
 
                 case TagType.Int:
-                    result = TagFactory.CreateTag(name, this.ReadInt());
+                    result = TagFactory.CreateTag(name, ReadInt());
                     break;
 
                 case TagType.Long:
-                    result = TagFactory.CreateTag(name, this.ReadLong());
+                    result = TagFactory.CreateTag(name, ReadLong());
                     break;
 
                 case TagType.Float:
-                    result = TagFactory.CreateTag(name, this.ReadFloat());
+                    result = TagFactory.CreateTag(name, ReadFloat());
                     break;
 
                 case TagType.Double:
-                    result = TagFactory.CreateTag(name, this.ReadDouble());
+                    result = TagFactory.CreateTag(name, ReadDouble());
                     break;
 
                 case TagType.ByteArray:
-                    result = TagFactory.CreateTag(name, this.ReadByteArray());
+                    result = TagFactory.CreateTag(name, ReadByteArray());
                     break;
 
                 case TagType.String:
-                    result = TagFactory.CreateTag(name, this.ReadString());
+                    result = TagFactory.CreateTag(name, ReadString());
                     break;
 
                 case TagType.List:
-                    result = TagFactory.CreateTag(name, this.ReadList());
+                    result = TagFactory.CreateTag(name, ReadList());
                     break;
 
                 case TagType.Compound:
-                    result = TagFactory.CreateTag(name, this.ReadCompound());
+                    result = TagFactory.CreateTag(name, ReadCompound());
                     break;
 
                 case TagType.IntArray:
-                    result = TagFactory.CreateTag(name, this.ReadIntArray());
+                    result = TagFactory.CreateTag(name, ReadIntArray());
                     break;
 
                 // Can't be hit as ReadTagType will throw
@@ -354,7 +334,7 @@ namespace NBT.Serialization
         {
             TagType type;
 
-            this.InitializeReader();
+            InitializeReader();
 
             if (defaultTagType != TagType.None)
             {
@@ -362,9 +342,7 @@ namespace NBT.Serialization
             }
             else
             {
-                string typeName;
-
-                typeName = _reader.GetAttribute("type");
+                var typeName = _reader.GetAttribute("type");
 
                 if (string.IsNullOrEmpty(typeName))
                 {

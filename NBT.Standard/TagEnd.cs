@@ -6,7 +6,7 @@ namespace NBT
     {
         #region Constants
 
-        private const string _value = "[End]";
+        private const string Value = "[End]";
 
         #endregion
 
@@ -21,10 +21,7 @@ namespace NBT
 
         #region Properties
 
-        public override TagType Type
-        {
-            get { return TagType.End; }
-        }
+        public override TagType Type => TagType.End;
 
         #endregion
 
@@ -32,7 +29,7 @@ namespace NBT
 
         public override int GetHashCode()
         {
-            return _value.GetHashCode();
+            return Value.GetHashCode();
         }
 
         public override object GetValue()
@@ -47,7 +44,7 @@ namespace NBT
 
         public override string ToString()
         {
-            return _value;
+            return Value;
         }
 
         public override string ToValueString()
