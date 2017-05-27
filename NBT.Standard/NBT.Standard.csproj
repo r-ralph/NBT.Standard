@@ -1,0 +1,140 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <RootNamespace>NBT</RootNamespace>
+    <Description>Named Binary Tag Format Library</Description>
+    <PackageProjectUrl>https://github.com/r-ralph/NBT.Standard/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/r-ralph/NBT.Standard/</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Serialization\TagReader.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagReader.generated.tt</DependentUpon>
+    </None>
+    <None Include="Serialization\TagWriter.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagWriter.generated.tt</DependentUpon>
+    </None>
+    <None Include="Serialization\XmlTagReader.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>XmlTagReader.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagByteArray.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagByteArray.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagCollection.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagCollection.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagDictionary.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagDictionary.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagFactory.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagFactory.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagIntArray.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagIntArray.generated.tt</DependentUpon>
+    </None>
+    <None Include="TagType.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagType.generated.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Serialization\TagReader.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagReader.generated.cs</LastGenOutput>
+    </None>
+    <None Update="Serialization\TagWriter.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagWriter.generated.cs</LastGenOutput>
+    </None>
+    <None Update="Serialization\XmlTagReader.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>XmlTagReader.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagByteArray.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagByteArray.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagCollection.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagCollection.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagDictionary.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagDictionary.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagFactory.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagFactory.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagIntArray.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagIntArray.generated.cs</LastGenOutput>
+    </None>
+    <None Update="TagType.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagType.generated.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Serialization\TagWriter.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagWriter.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\XmlTagReader.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>XmlTagReader.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagByteArray.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagByteArray.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagCollection.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagCollection.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagDictionary.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagDictionary.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagFactory.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagFactory.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagIntArray.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagIntArray.generated.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TagType.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagType.generated.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>
