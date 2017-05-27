@@ -52,7 +52,6 @@ namespace NBT
       get { return TagType.<#=nbtTagName #>; }
     }
 
-    [Category("Data")]
     public <#=dataType #>[] Value
     {
       get { return _value; }
