@@ -2,7 +2,7 @@
 
 namespace NBT
 {
-    internal static class BitHelper
+    public static class BitHelper
     {
         #region Constants
 

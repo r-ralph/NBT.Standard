@@ -1,0 +1,140 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\NBT.Standard\NbtGeneratorData.t4" #>using Xunit;
+
+namespace NBT.Test
+{
+  partial class TagFactoryTests
+  {
+<# for (int i = 0; i < netTypeNames.Length; i++)
+    {
+      string name;
+      string nbtName;
+      string tagName;
+      object testValue;
+      string tagClassName;
+
+      name = netTypeNames[i];
+      nbtName = nbtTypeNames[i];
+      tagName = nbtTagTypeNames[i];
+      testValue = tagTestData[i];
+      tagClassName = "Tag" + nbtName;
+      #>
+    [Fact]
+    public void Create_with_type_creates_<#=nbtName.ToLower() #>()
+    {
+      // arrange
+      Tag actual;
+      TagType type;
+
+      type = TagType.<#=nbtName #>;
+
+      // act
+      actual = TagFactory.CreateTag(type);
+
+      // assert
+      Assert.NotNull(actual);
+      Assert.IsType<<#=tagClassName #>>(actual);
+    }
+
+    <#
+      if (i != tagTypeEnd)
+      {
+        #>[Fact]
+    public void Create_with_type_sets_<#=nbtName.ToLower() #>_name()
+    {
+      // arrange
+      Tag actual;
+      string expected;
+      <#=name #> value;
+      TagType type;
+
+      type = TagType.<#=nbtName #>;
+
+      expected = "Alpha_<#=tagName #>";
+      value = default(<#=name #>);
+
+      // act
+      actual = TagFactory.CreateTag(expected, type, value);
+
+      // assert
+      Assert.Equal(expected, actual.Name);
+    }
+
+    [Fact]
+    public void Create_with_type_sets_<#=nbtName.ToLower() #>_value()
+    {
+      // arrange
+      Tag actual;
+      TagType type;
+      object expected;
+
+      type = TagType.<#=nbtName #>;
+
+      expected = <#=testValue #>;
+
+      // act
+      actual = TagFactory.CreateTag(type, expected);
+
+      // assert
+      Assert.Equal(expected, actual.GetValue());
+    }
+
+    [Fact]
+    public void Create_with_value_creates_<#=nbtName.ToLower() #>_type()
+    {
+      // arrange
+      Tag actual;
+      <#=name #> expected;
+
+      expected = <#=testValue #>;
+
+      // act
+      actual = TagFactory.CreateTag(expected);
+
+      // assert
+      Assert.NotNull(actual);
+      Assert.IsType<<#=tagClassName #>>(actual);
+    }
+
+    [Fact]
+    public void Create_with_value_sets_<#=nbtName.ToLower() #>_value()
+    {
+      // arrange
+      Tag actual;
+      <#=name #> expected;
+
+      expected = <#=testValue #>;
+
+      // act
+      actual = TagFactory.CreateTag(expected);
+
+      // assert
+      Assert.Equal(expected, actual.GetValue());
+    }
+
+    [Fact]
+    public void Create_with_value_sets_<#=nbtName.ToLower() #>_name()
+    {
+      // arrange
+      Tag actual;
+      string expected;
+      <#=name #> value;
+
+      expected = "Alpha_<#=tagName #>";
+      value = <#=testValue #>;
+
+      // act
+      actual = TagFactory.CreateTag(expected, value);
+
+      // assert
+      Assert.Equal(expected, actual.Name);
+    }
+
+<#
+      }
+    }
+#>
+  }
+}
