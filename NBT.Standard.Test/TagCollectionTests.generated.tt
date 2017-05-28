@@ -1,0 +1,74 @@
+﻿﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ include file="..\NBT.Standard\NbtGeneratorData.t4" #>
+<#@ output extension=".cs" #>using System;
+using Xunit;
+
+namespace NBT.Test
+{
+  partial class TagCollectionTests
+  {
+<# for (int i = 0; i < netTypeNames.Length; i++)
+    {
+      string name;
+      string nbtName;
+      string tagName;
+      object testData;
+
+      name = netTypeNames[i];
+      nbtName = nbtTypeNames[i];
+      tagName = "Tag" + nbtName;
+      testData = tagTestData[i];
+
+      if (name != null)
+      {
+        #>
+    [Fact]
+    public void Add_adds_unnamed_<#=nbtName.ToLower() #>()
+    {
+      // arrange
+      TagCollection target;
+      <#=tagName #> actual;
+      <#=name #> expected;
+
+      expected = <#=testData #>;
+
+      target = new TagCollection();
+
+      // act
+      actual = target.Add(expected);
+
+      // assert
+      Assert.NotNull(actual);
+      Assert.True(target.Contains(actual));
+      Assert.Empty(actual.Name);
+      Assert.Equal(expected, actual.Value);
+    }
+
+    [Fact]
+    public void Add_adds_unnamed_<#=nbtName.ToLower() #>_object()
+    {
+      // arrange
+      TagCollection target;
+      Tag actual;
+      object expected;
+
+      expected = <#=testData #>;
+
+      target = new TagCollection();
+
+      // act
+      actual = target.Add(expected);
+
+      // assert
+      Assert.NotNull(actual);
+      Assert.True(target.Contains(actual));
+      Assert.Empty(actual.Name);
+      Assert.Equal(expected, actual.GetValue());
+    }
+
+    <#
+      }
+    }
+#>
+  }
+}

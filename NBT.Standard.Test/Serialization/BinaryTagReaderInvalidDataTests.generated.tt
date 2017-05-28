@@ -1,0 +1,99 @@
+﻿﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\..\NBT.Standard\NbtGeneratorData.t4" #>using System.IO;
+using Xunit;
+using NBT.Serialization;
+
+namespace NBT.Test.Serialization
+{
+  partial class BinaryTagReaderTests
+  {
+<# for (int i = 0; i < netTypeNames.Length; i++)
+    {
+      string nbtName;
+
+      nbtName = nbtTypeNames[i];
+
+      if (i != tagTypeEnd)
+      {
+        if (i == tagTypeString)
+        {
+          #>
+    [Fact]
+    public void Read<#=nbtName #>_throws_exception_if_data_invalid()
+    {
+      using (MemoryStream stream = new MemoryStream())
+      {
+        // arrange
+        TagReader reader;
+        TagWriter writer;
+
+        reader = this.CreateReader(stream);
+        writer = new BinaryTagWriter(stream);
+
+        // TODO: WriteValue is currently protected
+        //writer.WriteValue((short)100);
+        this.WriteValue(stream, (short)100);
+
+        stream.Position = 0;
+
+        // act
+		Assert.Throws<InvalidDataException>(() => reader.Read<#=nbtName #>());
+      }
+    }
+
+    <#
+        }
+        else if (!this.IsArrayType(i))
+        {
+          #>
+    [Fact]
+    public void Read<#=nbtName #>_throws_exception_if_data_invalid()
+    {
+      using (MemoryStream stream = new MemoryStream())
+      {
+        // arrange
+        TagReader reader;
+
+        reader = this.CreateReader(stream);
+
+        // act
+		Assert.Throws<InvalidDataException>(() => reader.Read<#=nbtName #>());
+      }
+    }
+
+<#
+        }
+        else
+        {
+          #>
+    [Fact]
+    public void Read<#=nbtName #>_throws_exception_if_data_invalid()
+    {
+      using (MemoryStream stream = new MemoryStream())
+      {
+        // arrange
+        TagReader reader;
+        TagWriter writer;
+
+        reader = this.CreateReader(stream);
+        writer = new BinaryTagWriter(stream);
+
+        // TODO: WriteValue is currently protected
+        //writer.WriteValue(100);
+        this.WriteValue(stream, 100);
+
+        stream.Position = 0;
+
+        // act
+		Assert.Throws<InvalidDataException>(() => reader.Read<#=nbtName #>());
+      }
+    }
+
+    <#
+        }
+      }
+    }
+#>
+  }
+}
