@@ -34,16 +34,19 @@ namespace NBT.Test.Serialization
         {
             // act
             var e = Assert.Throws<ArgumentNullException>(() => TagWriter.CreateWriter(NbtFormat.Xml, null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: stream", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: stream", e.Message);
         }
 
         [Fact]
         public void CreateWriter_throws_exception_for_unknown_type()
         {
             // act
-            var e = Assert.Throws<ArgumentNullException>(
+            var e = Assert.Throws<ArgumentOutOfRangeException>(
                 () => TagWriter.CreateWriter(NbtFormat.Unknown, new MemoryStream()));
-            Assert.Equal("Invalid format.\r\nParameter name: format\r\nActual value was Unknown.", e.Message);
+            Assert.Equal($"Invalid format.{Environment.NewLine}" +
+                         $"Parameter name: format{Environment.NewLine}" +
+                         "Actual value was Unknown.",
+                e.Message);
         }
 
         #endregion

@@ -128,7 +128,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentNullException>(() => target.Value = null);
-            Assert.Equal("Value cannot be null.\r\nParameter name: value", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: value", e.Message);
         }
 
         #endregion

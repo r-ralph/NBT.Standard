@@ -40,7 +40,7 @@ namespace NBT.Test
         {
             // act
             var e = Assert.Throws<ArgumentNullException>(() => new NbtDocument(null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: document", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: document", e.Message);
         }
 
         [Fact]
@@ -203,8 +203,8 @@ namespace NBT.Test
             Stream stream = new DeflateStream(Stream.Null, CompressionMode.Decompress);
 
             // act
-            var e = Assert.Throws<ArgumentNullException>(() => NbtDocument.GetDocumentFormat(stream));
-            Assert.Equal("Stream is not seekable.\r\nParameter name: stream", e.Message);
+            var e = Assert.Throws<ArgumentException>(() => NbtDocument.GetDocumentFormat(stream));
+            Assert.Equal($"Stream is not seekable.{Environment.NewLine}Parameter name: stream", e.Message);
         }
 
         [Fact]
@@ -617,7 +617,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentNullException>(() => target.Save(string.Empty));
-            Assert.Equal("Value cannot be null.\r\nParameter name: fileName", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: fileName", e.Message);
         }
 
         [Fact]
@@ -628,7 +628,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentNullException>(() => target.Save((string) null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: fileName", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: fileName", e.Message);
         }
 
         [Fact]
@@ -640,7 +640,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentNullException>(() => target.Save((Stream) null));
-            Assert.Equal("Value cannot be null.\r\nParameter name: stream", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: stream", e.Message);
         }
 
         [Fact]

@@ -46,7 +46,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => target.Add(new TagByte("alpha", 120)));
-            Assert.Equal("Only unnamed tags are supported.\r\nParameter name: item", e.Message);
+            Assert.Equal($"Only unnamed tags are supported.{Environment.NewLine}Parameter name: item", e.Message);
         }
 
         [Fact]
@@ -57,7 +57,9 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => target.Add(int.MaxValue));
-            Assert.Equal("Only items of type Byte can be added to this collection.\r\nParameter name: item", e.Message);
+            Assert.Equal(
+                $"Only items of type Byte can be added to this collection.{Environment.NewLine}Parameter name: item",
+                e.Message);
         }
 
         [Fact]
@@ -68,7 +70,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => target.Add(TimeSpan.MinValue));
-            Assert.Equal("Invalid value type.\r\nParameter name: value", e.Message);
+            Assert.Equal($"Invalid value type.{Environment.NewLine}Parameter name: value", e.Message);
         }
 
         [Fact]
@@ -169,7 +171,9 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => target[0] = new TagInt());
-            Assert.Equal("Only items of type Byte can be added to this collection.\r\nParameter name: item", e.Message);
+            Assert.Equal(
+                $"Only items of type Byte can be added to this collection.{Environment.NewLine}Parameter name: item",
+                e.Message);
         }
 
         [Fact]

@@ -30,7 +30,8 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => TagFactory.CreateTag(type));
-            Assert.Equal("Unrecognized or unsupported tag type.\r\nParameter name: tagType", e.Message);
+            Assert.Equal($"Unrecognized or unsupported tag type.{Environment.NewLine}Parameter name: tagType",
+                e.Message);
         }
 
         [Fact]
@@ -42,7 +43,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => TagFactory.CreateTag(string.Empty, type, listType));
-            Assert.Equal("Only lists can have a list type.\r\nParameter name: listType", e.Message);
+            Assert.Equal($"Only lists can have a list type.{Environment.NewLine}Parameter name: listType", e.Message);
         }
 
         [Fact]
@@ -53,7 +54,8 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => TagFactory.CreateTag(string.Empty, type, 13));
-            Assert.Equal("Unrecognized or unsupported tag type.\r\nParameter name: tagType", e.Message);
+            Assert.Equal($"Unrecognized or unsupported tag type.{Environment.NewLine}Parameter name: tagType",
+                e.Message);
         }
 
         #endregion

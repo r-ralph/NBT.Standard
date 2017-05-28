@@ -126,7 +126,6 @@ namespace NBT.Test.Serialization
       target.WriteStartDocument();
 
       // act
-      target.WriteStartDocument();
 	  var e = Assert.Throws<InvalidOperationException>(() => target.WriteStartDocument());
 	  Assert.Equal("Document is already open.", e.Message);
     }
@@ -2910,7 +2909,7 @@ namespace NBT.Test.Serialization
 
         // act
 		var e = Assert.Throws<ArgumentException>(() => target.WriteTag(new BadTag("bad")));
-        Assert.Equal("Unrecognized or unsupported tag type.\r\nParameter name: tag", e.Message);
+        Assert.Equal($"Unrecognized or unsupported tag type.{Environment.NewLine}Parameter name: tag", e.Message);
       }
     }
 
@@ -2926,7 +2925,7 @@ namespace NBT.Test.Serialization
 
         // act
 		var e = Assert.Throws<ArgumentException>(() => target.WriteStartArray(TagType.Compound, 0));
-        Assert.Equal("Only byte or integer types are supported.\r\nParameter name: type", e.Message);
+        Assert.Equal($"Only byte or integer types are supported.{Environment.NewLine}Parameter name: type", e.Message);
       }
     }
 

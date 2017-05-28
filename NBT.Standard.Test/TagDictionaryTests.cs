@@ -31,7 +31,7 @@ namespace NBT.Test
 
             // act
             var e = Assert.Throws<ArgumentException>(() => target.Add("alpha", TimeSpan.MinValue));
-            Assert.Equal("Invalid value type.\r\nParameter name: value", e.Message);
+            Assert.Equal($"Invalid value type.{Environment.NewLine}Parameter name: value", e.Message);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace NBT.Test
             // assert
             Assert.Equal(expected.Count, target.Count);
             Assert.IsType<TagByte>(target["alpha"]);
-            Assert.Equal(1, target["alpha"].GetValue());
+            Assert.Equal((byte) 1, target["alpha"].GetValue());
             Assert.IsType<TagShort>(target["beta"]);
             Assert.Equal(short.MaxValue, target["beta"].GetValue());
             Assert.IsType<TagInt>(target["gamma"]);
@@ -83,7 +83,7 @@ namespace NBT.Test
             // assert
             Assert.Equal(expected.Length, target.Count);
             Assert.IsType<TagByte>(target["alpha"]);
-            Assert.Equal(1, target["alpha"].GetValue());
+            Assert.Equal((byte) 1, target["alpha"].GetValue());
             Assert.IsType<TagShort>(target["beta"]);
             Assert.Equal(short.MaxValue, target["beta"].GetValue());
             Assert.IsType<TagInt>(target["gamma"]);

@@ -57,7 +57,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -105,7 +105,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -153,7 +153,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -201,7 +201,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -249,7 +249,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -297,7 +297,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -345,7 +345,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -393,7 +393,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -441,7 +441,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -489,7 +489,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -537,7 +537,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)expected);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -564,7 +564,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.Value);
@@ -590,7 +590,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -616,7 +616,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.Value);
@@ -642,7 +642,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
@@ -668,7 +668,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.Value);
@@ -694,7 +694,7 @@ namespace NBT.Test
       actual = target.Add(expectedName, (object)value);
 
       // assert
-      Assert.Null(actual);
+      Assert.NotNull(actual);
       Assert.True(target.Contains(expectedName));
       Assert.Equal(expectedName, actual.Name);
       Assert.Equal(expected, actual.GetValue());
