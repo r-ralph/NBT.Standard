@@ -5,3 +5,4 @@ dotnet restore
 dotnet build
 
 # Tests
+dotnet test NBT.Standard.Test/NBT.Standard.Test.csproj
