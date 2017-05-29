@@ -11,6 +11,7 @@
     <Copyright>Copyright 2017 Ralph</Copyright>
     <PackageLicenseUrl>https://github.com/r-ralph/NBT.Standard/blob/master/COPYING.txt</PackageLicenseUrl>
     <PackageTags>NBT</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Serialization\TagReader.generated.cs">
