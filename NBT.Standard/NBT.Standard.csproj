@@ -6,6 +6,11 @@
     <PackageProjectUrl>https://github.com/r-ralph/NBT.Standard/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/r-ralph/NBT.Standard/</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+    <Authors>Ralph</Authors>
+    <Company />
+    <Copyright>Copyright 2017 Ralph</Copyright>
+    <PackageLicenseUrl>https://github.com/r-ralph/NBT.Standard/blob/master/COPYING.txt</PackageLicenseUrl>
+    <PackageTags>NBT</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Serialization\TagReader.generated.cs">
