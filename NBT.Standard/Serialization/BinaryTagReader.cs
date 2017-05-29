@@ -21,7 +21,8 @@ namespace NBT.Serialization
 
         public BinaryTagReader(Stream stream)
             : this(stream, true)
-        { }
+        {
+        }
 
         public BinaryTagReader(Stream stream, bool autoDetectCompression)
         {
@@ -76,17 +77,17 @@ namespace NBT.Serialization
             {
                 using (Stream decompressionStream = new GZipStream(stream, CompressionMode.Decompress, true))
                 {
-                    result = decompressionStream.ReadByte() == (int)TagType.Compound;
+                    result = decompressionStream.ReadByte() == (int) TagType.Compound;
                 }
             }
             else if (stream.IsDeflateCompressed())
             {
                 using (Stream decompressionStream = new DeflateStream(stream, CompressionMode.Decompress, true))
                 {
-                    result = decompressionStream.ReadByte() == (int)TagType.Compound;
+                    result = decompressionStream.ReadByte() == (int) TagType.Compound;
                 }
             }
-            else if (stream.ReadByte() == (int)TagType.Compound)
+            else if (stream.ReadByte() == (int) TagType.Compound)
             {
                 result = true;
             }
@@ -114,7 +115,7 @@ namespace NBT.Serialization
                 throw new InvalidDataException();
             }
 
-            return (byte)data;
+            return (byte) data;
         }
 
         public override byte[] ReadByteArray()
@@ -231,23 +232,19 @@ namespace NBT.Serialization
 
         public override TagCollection ReadList()
         {
-            int length;
+            var listType = (TagType) ReadByte();
 
-            var listType = (TagType)ReadByte();
-
-            if (listType < TagType.Byte || listType > TagType.IntArray)
+            if (listType < TagType.End || listType > TagType.IntArray)
             {
                 throw new InvalidDataException($"Unexpected list type '{listType}' found.");
             }
 
             var tags = new TagCollection(listType);
-            length = ReadInt();
+            var length = ReadInt();
 
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 Tag tag;
-
-                tag = null;
 
                 _state.StartTag(listType);
 
@@ -297,14 +294,17 @@ namespace NBT.Serialization
                         tag = TagFactory.CreateTag(ReadString());
                         break;
 
-                    // Can never be hit due to the type check above
-                    //default:
-                    //  throw new InvalidDataException("Invalid list type.");
+                    default:
+                        tag = null;
+                        break;
                 }
 
                 _state.EndTag();
 
-                tags.Add(tag);
+                if (tag != null)
+                {
+                    tags.Add(tag);
+                }
             }
 
             return tags;
@@ -450,7 +450,7 @@ namespace NBT.Serialization
 
             type = _stream.ReadByte();
 
-            return (TagType)type;
+            return (TagType) type;
         }
 
         #endregion

@@ -21,6 +21,8 @@ namespace NBT.Test
 
         protected string AnvilRegionFileName => Path.Combine(DataPath, "r.0.0.mca");
 
+        protected string LevelDatFileName => Path.Combine(DataPath, "level.dat");
+
         protected string BadFileName => Path.Combine(DataPath, "badfile.txt");
 
         protected string ComplexDataFileName => Path.Combine(DataPath, "bigtest.nbt");
